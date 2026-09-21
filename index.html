@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RANGER-X CHECK</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 0%, #172033 0%, transparent 35%),
+                radial-gradient(circle at 90% 100%, #111827 0%, transparent 40%),
+                #080b11;
+            color: #e8edf5;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 25px 18px 50px;
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            border: 1px solid #202938;
+            background: rgba(13, 17, 25, .92);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.25);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg,#7c3aed,#2563eb);
+            font-weight: 900;
+            box-shadow: 0 0 25px rgba(99,102,241,.35);
+        }
+
+        .brand h1 {
+            font-size: 18px;
+            letter-spacing: .5px;
+        }
+
+        .brand span {
+            display: block;
+            color: #7f8a9c;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #8ee6ad;
+            font-size: 13px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            box-shadow: 0 0 12px #34d399;
+        }
+
+        /* GRID */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.45fr;
+            gap: 18px;
+        }
+
+        .card {
+            background: rgba(13,17,25,.94);
+            border: 1px solid #202938;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.2);
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #aab4c4;
+            margin-bottom: 15px;
+        }
+
+        /* UPLOAD */
+
+        .upload {
+            border: 1px dashed #354154;
+            border-radius: 14px;
+            padding: 35px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .upload:hover {
+            border-color: #6366f1;
+            background: rgba(99,102,241,.05);
+        }
+
+        .upload-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .upload strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        .upload p {
+            color: #697589;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 13px;
+            color: #93a4ff;
+            font-size: 12px;
+            min-height: 18px;
+        }
+
+        /* BUTTON */
+
+        .button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 13px;
+            border: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg,#6366f1,#7c3aed);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.12);
+        }
+
+        .button:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .stat {
+            background: #0a0e15;
+            border: 1px solid #202938;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .stat small {
+            display: block;
+            color: #687487;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .stat strong {
+            font-size: 22px;
+        }
+
+        .green {
+            color: #5ee49a;
+        }
+
+        .red {
+            color: #fb7185;
+        }
+
+        .blue {
+            color: #93a4ff;
+        }
+
+        /* PROGRESS */
+
+        .progress-box {
+            margin-top: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #7d899c;
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            height: 8px;
+            background: #171e2a;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg,#6366f1,#a855f7);
+            transition: width .25s;
+        }
+
+        /* LOG */
+
+        .log {
+            height: 320px;
+            overflow-y: auto;
+            background: #080b11;
+            border: 1px solid #1d2634;
+            border-radius: 12px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .line {
+            display: grid;
+            grid-template-columns: 90px 1fr 50px;
+            gap: 10px;
+            padding: 9px 5px;
+            border-bottom: 1px solid #111722;
+        }
+
+        .tx {
+            color: #738097;
+        }
+
+        .ok {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        .no {
+            color: #fb7185;
+            font-weight: 700;
+        }
+
+        .time {
+            color: #718096;
+            text-align: right;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            color: #4f5b6d;
+            font-size: 11px;
+            margin-top: 25px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:800px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .status {
+                display: none;
+            }
+        }
+
+        @media(max-width:500px) {
+            .container {
+                padding: 15px 10px 35px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .line {
+                grid-template-columns: 75px 1fr 35px;
+                font-size: 11px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="header">
+
+        <div class="brand">
+            <div class="logo">RX</div>
+
+            <div>
+                <h1>RANGER-X CHECK</h1>
+                <span>Batch processing dashboard</span>
+            </div>
+        </div>
+
+        <div class="status">
+            <span class="dot"></span>
+            Sistema online
+        </div>
+
+    </header>
+
+
+    <div class="grid">
+
+        <!-- LEFT -->
+
+        <section>
+
+            <div class="card">
+
+                <div class="card-title">
+                    📁 Cargar archivo
+                </div>
+
+                <label class="upload">
+
+                    <input
+                        type="file"
+                        id="file"
+                        accept=".txt,.csv"
+                    >
+
+                    <div class="upload-icon">📄</div>
+
+                    <strong>
+                        Selecciona un archivo
+                    </strong>
+
+                    <p>
+                        TXT o CSV
+                    </p>
+
+                </label>
+
+                <div
+                    class="file-name"
+                    id="fileName"
+                >
+                    Ningún archivo seleccionado
+                </div>
+
+                <button
+                    class="button"
+                    id="start"
+                    disabled
+                >
+                    ▶ Iniciar procesamiento
+                </button>
+
+            </div>
+
+
+            <div class="card" style="margin-top:18px">
+
+                <div class="card-title">
+                    📊 Estadísticas
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <small>PROCESADAS</small>
+                        <strong id="checked">0</strong>
+                    </div>
+
+                    <div class="stat">
+                        <small>VÁLIDAS</small>
+                        <strong
+                            class="green"
+                            id="hits"
+                        >0</strong>
+                    </div>
+
+                    <div class="stat">
+                        <small>FALLIDAS</small>
+                        <strong
+                            class="red"
+                            id="failed"
+                        >0</strong>
+                    </div>
+
+                </div>
+
+                <div class="progress-box">
+
+                    <div class="progress-info">
+                        <span id="progressText">
+                            Esperando archivo...
+                        </span>
+
+                        <span id="percent">
+                            0%
+                        </span>
+                    </div>
+
+                    <div class="progress">
+                        <div
+                            class="progress-bar"
+                            id="bar"
+                        ></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT -->
+
+        <section>
+
+            <div class="card">
+
+                <div class="card-title">
+                    ⚡ Actividad del lote
+                </div>
+
+                <div
+                    class="log"
+                    id="log"
+                >
+
+                    <div style="
+                        text-align:center;
+                        padding:90px 10px;
+                        color:#4f5b6d;
+                    ">
+                        Esperando procesamiento...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <footer>
+        RANGER-X CHECK © 2026
+    </footer>
+
+</div>
+
+
+<script>
+
+const fileInput = document.getElementById("file");
+const fileName = document.getElementById("fileName");
+const startButton = document.getElementById("start");
+
+const checkedEl = document.getElementById("checked");
+const hitsEl = document.getElementById("hits");
+const failedEl = document.getElementById("failed");
+
+const progressBar = document.getElementById("bar");
+const progressText = document.getElementById("progressText");
+const percentEl = document.getElementById("percent");
+
+const log = document.getElementById("log");
+
+
+let selectedFile = null;
+
+
+/* FILE */
+
+fileInput.addEventListener("change", () => {
+
+    selectedFile = fileInput.files[0];
+
+    if (!selectedFile) {
+        fileName.textContent =
+            "Ningún archivo seleccionado";
+
+        startButton.disabled = true;
+
+        return;
+    }
+
+    fileName.textContent =
+        selectedFile.name;
+
+    startButton.disabled = false;
+
+});
+
+
+/* PROCESS */
+
+startButton.addEventListener("click", async () => {
+
+    if (!selectedFile) return;
+
+    startButton.disabled = true;
+
+    checkedEl.textContent = "0";
+    hitsEl.textContent = "0";
+    failedEl.textContent = "0";
+
+    progressBar.style.width = "0%";
+    percentEl.textContent = "0%";
+
+    progressText.textContent =
+        "Procesando...";
+
+
+    log.innerHTML = "";
+
+
+    /*
+       DEMO LOCAL
+
+       Esta simulación solamente demuestra
+       la interfaz. No comprueba cuentas,
+       cookies ni credenciales reales.
+    */
+
+    const demoItems = 30;
+
+    let hits = 0;
+    let failed = 0;
+
+
+    for (let i = 1; i <= demoItems; i++) {
+
+        await sleep(
+            180 + Math.random() * 300
+        );
+
+
+        const valid =
+            Math.random() > .35;
+
+
+        if (valid) {
+            hits++;
+        } else {
+            failed++;
+        }
+
+
+        checkedEl.textContent = i;
+
+        hitsEl.textContent = hits;
+
+        failedEl.textContent = failed;
+
+
+        const percentage =
+            Math.round(
+                (i / demoItems) * 100
+            );
+
+
+        progressBar.style.width =
+            percentage + "%";
+
+        percentEl.textContent =
+            percentage + "%";
+
+
+        progressText.textContent =
+            `Enviando ${i}/${demoItems}`;
+
+
+        addLog(
+            `TX-${String(4600 + i)}`,
+            valid ? "OK" : "NO",
+            (0.7 + Math.random() * 0.9)
+                .toFixed(1)
+        );
+
+    }
+
+
+    progressText.textContent =
+        "Lote completado";
+
+    startButton.disabled = false;
+
+});
+
+
+/* LOG */
+
+function addLog(id, status, seconds) {
+
+    const line =
+        document.createElement("div");
+
+    line.className = "line";
+
+    line.innerHTML = `
+        <span class="tx">${id}</span>
+        <span class="${status === "OK" ? "ok" : "no"}">
+            ${status}
+        </span>
+        <span class="time">
+            ${seconds}s
+        </span>
+    `;
+
+    log.appendChild(line);
+
+    log.scrollTop =
+        log.scrollHeight;
+}
+
+
+/* WAIT */
+
+function sleep(ms) {
+
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
+
+}
+
+</script>
+
+</body>
+</html>
